@@ -86,11 +86,6 @@ def docker_machine_ip():
     check_result(result, 'get docker IP')
 
 
-@invoke.task()
-def docker_machine_purge():
-    pass
-
-
 @invoke.task(pre=[compile_localize_test_compose])
 def docker_machine_start(file_compose='tests/test-compose.localized.yml'):
     # Parse our compile config
@@ -141,3 +136,4 @@ def docker_machine_stop(file_compose='tests/test-compose.localized.yml'):
 @invoke.task
 def update_base():
     invoke.run('git pull https://github.com/fogies/docker-base.git master', encoding=sys.stdout.encoding)
+    invoke.run('git pull https://github.com/fogies/testwithdocker-base.git master', encoding=sys.stdout.encoding)

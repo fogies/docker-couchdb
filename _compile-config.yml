@@ -15,6 +15,7 @@ config:
     travis:
       version: 1.11.2-0~trusty
       compose_version: 1.8.0-rc1
+      compose_up_delay: 15
 
   dockerfile:
     main:
