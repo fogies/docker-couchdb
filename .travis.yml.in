@@ -38,8 +38,9 @@ install:
 {%- endfor %}
 
 script:
-  - invoke compile_localize_test_compose
-  - docker-compose -f tests/test-compose.localized.yml build
-  - docker-compose -f tests/test-compose.localized.yml up -d
+  - invoke compile_localize_test_compose &&
+    docker-compose -f tests/test-compose.localized.yml build &&
+    docker-compose -f tests/test-compose.localized.yml up -d &&
+    sleep {{ docker.travis.compose_up_delay }}
   - nosetests
 {# This comment gives us a newline at the end of the generated file #}

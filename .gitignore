@@ -3,6 +3,7 @@
 *.iml
 
 # Our Python environment
+env34
 env35
 
 # Compiled Python
@@ -10,3 +11,6 @@ env35
 
 # Localized compose files
 tests/test-compose.localized.yml
+
+# Any secrets, such as passwords or keys
+/secrets
