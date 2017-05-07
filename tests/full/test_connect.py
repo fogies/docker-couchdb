@@ -8,7 +8,7 @@ class TestConnect:
         response = requests.get(
             'http://{}:{}'.format(
                 base.docker.machine_ip(),
-                5984
+                80
             )
         )
 
