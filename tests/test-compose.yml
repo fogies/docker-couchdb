@@ -1,6 +1,0 @@
-main:
-  build: ..
-  ports:
-    - "80:5984"
-  volumes:
-    - "{{ CWD }}/tests/test-secrets/secrets.yml:/docker-couchdb-secrets/secrets.yml"

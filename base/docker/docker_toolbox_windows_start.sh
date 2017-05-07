@@ -4,8 +4,10 @@
 # Based on start.sh from C:\Program Files\Docker Toolbox
 ################################################################################
 
-trap '[ "$?" -eq 0 ] || read -p "Looks like something went wrong in step ´$STEP´... Press any key to continue..."' EXIT
+trap '[ "$?" -eq 0 ] || read -p "Error in step ´$STEP´. Press any key."' EXIT
 
+################################################################################
+# Confirm our Docker Machine and VirtualBox dependencies.
 ################################################################################
 
 VM="${DOCKER_MACHINE_NAME-default}"
@@ -19,15 +21,17 @@ else
 fi
 
 if [ ! -f "${DOCKER_MACHINE}" ]; then
-  echo "Docker Machine is not installed. Please re-run the Toolbox Installer and try again."
+  echo "Docker Machine not found."
   exit 1
 fi
 
 if [ ! -f "${VBOXMANAGE}" ]; then
-  echo "VirtualBox is not installed. Please re-run the Toolbox Installer and try again."
+  echo "VirtualBox not found."
   exit 1
 fi
 
+################################################################################
+# Check that our specific machine exists.
 ################################################################################
 
 STEP="Checking if machine $VM exists"
@@ -53,6 +57,8 @@ if [ $VM_EXISTS_CODE -eq 1 ]; then
 fi
 
 ################################################################################
+# Check that our specific machine is running.
+################################################################################
 
 STEP="Checking status on $VM"
 VM_STATUS="$("${DOCKER_MACHINE}" status ${VM} 2>&1)"
@@ -62,10 +68,14 @@ if [ "${VM_STATUS}" != "Running" ]; then
 fi
 
 ################################################################################
+# Configure the environment for our specific machine.
+################################################################################
 
 STEP="Setting env"
 eval "$("${DOCKER_MACHINE}" env --shell=bash ${VM})"
 
+################################################################################
+# Run our command.
 ################################################################################
 
 STEP="Finalize"
