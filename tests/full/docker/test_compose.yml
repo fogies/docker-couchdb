@@ -1,0 +1,5 @@
+test_main:
+  container_name: test_main
+  build: ../../..
+  volumes:
+    - "{{ DOCKER_LOCALIZE_CWD }}/tests/test-secrets/secrets.yml:/docker-couchdb-secrets/secrets.yml"

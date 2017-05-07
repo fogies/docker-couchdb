@@ -2,15 +2,20 @@
 .idea
 *.iml
 
-# Our Python environment
-env34
+# MacOS files
+.DS_Store
+
+# Python environment
 env35
 
-# Compiled Python
+# Python compilation
 *.pyc
 
-# Localized compose files
-tests/test-compose.localized.yml
+# Node install packages
+node_modules
 
-# Any secrets, such as passwords or keys
-/secrets
+# Docker files that have been localized
+tests/full/docker/test_compose.localized.yml
+
+# Secrets that should not be committed, such as passwords or keys
+>>>>>>> 76677a1717cd9952f7ce5e2654adc35cb232a1d9
