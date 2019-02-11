@@ -4,8 +4,8 @@
 # Uses pyenv.
 #
 
-ENV PYTHON_VERSION 3.5.2
-ENV PYTHON_PIP_VERSION 8.1.1
+ENV PYTHON_VERSION 3.6.6
+ENV PYTHON_PIP_VERSION 18.0
 
 # Remove Debian python
 RUN apt-get -qq purge -y python.*
@@ -23,3 +23,4 @@ RUN set -ex \
 
 RUN set -ex \
     && python -m pip install --upgrade pip==$PYTHON_PIP_VERSION
+

@@ -1,18 +1,26 @@
-import base.docker
+import base.docker.docker_commands
 import nose.tools
 import requests
+import yaml
 
 
 class TestConnect:
-    def test_connect_to_couchdb(self):
-        response = requests.get(
-            'http://{}:{}'.format(
-                base.docker.machine_ip(),
-                80
-            )
-        )
+    @classmethod
+    def setup_class(cls):
+        # Parse our compile config
+        with open('_base_config.yml') as f:
+            TestConnect.base_config = yaml.safe_load(f)['config']
 
-        nose.tools.assert_equals(
-            response.status_code,
-            200
-        )
+    def test_connect_to_couchdb(self):
+        if TestConnect.base_config['docker']['required']:
+            response = requests.get(
+                'http://{}:{}'.format(
+                    base.docker.docker_commands.machine_ip(),
+                    80
+                )
+            )
+
+            nose.tools.assert_equals(
+                response.status_code,
+                200
+            )

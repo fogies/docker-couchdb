@@ -39,18 +39,14 @@ install:
   # Install Ruby
   - rvm install {{ ruby.version }}
   - rvm @global do gem install bundler -v {{ ruby.bundler_version }}
-  - |
-    bundler_uninstall=$( rvm @global do gem list ^bundler$ -i -v "!={{ ruby.bundler_version }}" )
-    if [ "$bundler_uninstall" == "true" ]
-    then
-      rvm @global do gem uninstall bundler -v "!={{ ruby.bundler_version }}"
-    fi
   - rvm use {{ ruby.version }} --default
 
 {% endif %}
 {% if docker is defined and docker.required %}
   # Install Docker and Docker-Compose
-  - apt-cache madison docker-engine
+  - sudo add-apt-repository "deb https://apt.dockerproject.org/repo ubuntu-trusty main"
+  - sudo apt-get update
+  - apt-cache policy docker-engine
   - docker version
   - sudo apt-get -o Dpkg::Options::="--force-confnew" install --yes --force-yes docker-engine={{ docker.travis.version }}
   - sudo rm /usr/local/bin/docker-compose
@@ -62,7 +58,7 @@ install:
 
 {% endif %}
   # Invoke will get our other dependencies
-  - invoke update_dependencies
+  - invoke dependencies_ensure
 
   # Build our Dockerfiles
 {%- for current_dockerfile_key, current_dockerfile_config in dockerfile.items() %}

@@ -1,18 +1,23 @@
 import base.invoke.tasks.command
+import base.invoke.tasks.compile
 import invoke
 import re
+import requests
 import sys
 import yaml
 
 
-@invoke.task
-def update_base():
-    invoke.run('git pull https://github.com/fogies/docker-base.git master', encoding=sys.stdout.encoding)
-    invoke.run('git pull https://github.com/fogies/invoke-base.git master', encoding=sys.stdout.encoding)
+@invoke.task(pre=[
+    base.invoke.tasks.compile.compile_config
+])
+def dependencies_ensure():
+    # Check that we are internet connected
+    try:
+        response = requests.head(url='http://www.google.com', timeout=5)
+    except (requests.ConnectionError, requests.ConnectTimeout):
+        print('No connection for ensuring dependencies')
+        return
 
-
-@invoke.task
-def update_dependencies():
     # Parse our config
     with open('_base_config.yml') as f:
         base_config_yaml = yaml.safe_load(f)
@@ -66,13 +71,6 @@ def update_dependencies():
             )
             result = base.invoke.tasks.command.run(command)
 
-        # And only the correct Bundler version
-        # Expected to fail if no other versions of bundler are installed
-        command = 'gem uninstall bundler -v "!={}"'.format(
-            bundler_version_desired
-        )
-        result = base.invoke.tasks.command.run(command, error_on_failure=False)
-
         # Check we have our Ruby dependencies
         command = 'bundle check'
         result = base.invoke.tasks.command.run(command, error_on_failure=False)
@@ -81,3 +79,9 @@ def update_dependencies():
         if result.failed:
             command = 'bundle install'
             result = base.invoke.tasks.command.run(command)
+
+
+@invoke.task
+def dependencies_base_update():
+    invoke.run('git pull https://github.com/fogies/docker-base.git master', encoding=sys.stdout.encoding)
+    invoke.run('git pull https://github.com/fogies/invoke-base.git master', encoding=sys.stdout.encoding)
