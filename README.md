@@ -1,110 +1,44 @@
-This is the beginning of a project template.
+# invoke-base
 
-# Project Dependencies
+[![Build Status](https://travis-ci.org/fogies/docker-base.svg?branch=master)](https://travis-ci.org/fogies/docker-base)
 
-Dependencies required for this project are:
-- Python 3.5.2
-- Docker Toolbox 1.12.3
+A fogies project used as a template for other projects.
 
-  Note we are using this version due to a potential bug in 1.12.5, which is unable to mount volumes on Windows.
+Provides for dependency management, tasks via the invoke tool, and testing.
 
-  [https://github.com/docker/toolbox/issues/607](https://github.com/docker/toolbox/issues/607)
+## Project Dependencies
 
-# Windows Installation
+This project is based on a template:
 
-## Installing Python
+[https://github.com/fogies/invoke-base](https://github.com/fogies/invoke-base)
 
-[https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe](https://www.python.org/ftp/python/3.5.2/python-3.5.2.exe)
+Runtime dependencies for this project are:
+- Python 3.6.6
+- Docker Toolbox v18.06.1-ce
 
-This documentation assumes an installation path of `c:/Python35`.
+See [Installation for Windows](https://github.com/fogies/docker-base/blob/master/readme/install_windows.md).
 
-When installing Python:
+See [Installation for Mac](https://github.com/fogies/docker-base/blob/master/readme/install_mac.md).
 
-- Choose 'Customize Installation'
-- On 'Optional Features':
+## Tasks
 
-  Check 'pip' and 'for all users (requires elevation)'.
+This project uses Invoke for task execution. Available tasks can be listed:
 
-  Uncheck 'Documentation', 'tcl/tk and IDLE', 'Python test suite', 'py launcher'.
+`invoke -l`
 
-- On 'Advanced Options':
+See [Additional Task Documentation](https://github.com/fogies/docker-base/blob/master/readme/invoke.md).
 
-  Set an installation path of `c:/Python35`.
+Frequently used tasks will include:
 
-  Uncheck all options.
+### compile_config
 
-### Creating a Virtual Environment and Installing Dependencies
+Compile files specified in `_base_config.yml`, via key `compile_config : entries`.
 
-Create the virtual environment. From the working directory of our project (e.g., `c:/devel/invoke-base`):
+`invoke compile_config` 
 
-~~~
-c:/Python35/python.exe -m venv env35
-~~~
+### dependencies_ensure
 
-This will create a directory for the virtual environment (e.g., `c:/devel/invoke-base/env35/`).
+Ensure dependencies are installed.
 
-Next activate that virtual environment and install our Python dependencies:
+`invoke dependencies_ensure` 
 
-~~~
-env35/Scripts/activate.bat
-pip install -r requirements3.txt
-~~~
-
-## Installing Docker Toolbox
-
-[https://github.com/docker/toolbox/releases/download/v1.12.3/DockerToolbox-1.12.3.exe](https://github.com/docker/toolbox/releases/download/v1.12.3/DockerToolbox-1.12.3.exe)
-
-When installing Docker Toolbox:
-
-- On 'Select Destination Location':
-
-  Set an installation path of c:/Program Files/Docker Toolbox.
-
-- On 'Select Components':
-
-  Uncheck 'Kitematic for Windows'.
-
-# Mac Installation
-
-## Installing Homebrew
-
-This documentation assumes use of Homebrew: [https://brew.sh/](https://brew.sh/).
-
-~~~
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-~~~
-
-The default installation options are appropriate.
-
-## Installing Python
-
-~~~
-brew install python3
-~~~
-
-Installing `python3` via Homebrew should automatically install `pip3`. Use that to install `virtualenv`.
-
-~~~
-pip3 install virtualenv
-~~~
-
-### Creating a Virtual Environment and Installing Dependencies
-
-Create the virtual environment. From the working directory of our project (e.g., `~/Desktop/invoke-base`):
-
-~~~
-virtualenv -p python3 env35
-~~~
-
-This will create a directory for the virtual environment (e.g., `~/Desktop/invoke-base/env35/`).
-
-Next activate that virtual environment and install our Python dependencies:
-
-~~~
-source env35/bin/activate
-pip3 install -r requirements3.txt
-~~~
-
-## Installing Docker Toolbox
-
-`TODO`
