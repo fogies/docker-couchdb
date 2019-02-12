@@ -43,7 +43,7 @@ RUN apt-get -qq clean && \
 		liblzma-dev \
 		libmagickcore-dev \
 		libmagickwand-dev \
-		libmysqlclient-dev \
+		# libmysqlclient-dev \
 		libncurses-dev \
 		libpng-dev \
 		libpq-dev \

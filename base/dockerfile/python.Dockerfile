@@ -7,15 +7,12 @@
 ENV PYTHON_VERSION 3.6.6
 ENV PYTHON_PIP_VERSION 18.0
 
-# Remove Debian python
-RUN apt-get -qq purge -y python.*
-
-# Install pyenv
+# Install desired Python version using pyenv
 ENV PYENV_ROOT /root/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN set -ex \
-    && curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash \
+    && curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
     && pyenv update \
     && pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
