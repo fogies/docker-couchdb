@@ -121,6 +121,13 @@ COPY docker-couchdb/apply_secrets.py /docker-couchdb-temp/apply_secrets.py
 RUN dos2unix /docker-couchdb-temp/apply_secrets.py
 
 ################################################################################
+# Daemon that creates the databases needed for CouchDB to run.
+################################################################################
+COPY docker-couchdb/create_databases.py /docker-couchdb-temp/create_databases.py
+RUN dos2unix /docker-couchdb-temp/create_databases.py && \
+    chmod +x /docker-couchdb-temp/create_databases.py
+
+################################################################################
 # Set up our entrypoint script, which wraps the script from our base.
 ################################################################################
 COPY docker-couchdb/docker-couchdb-entrypoint.sh /docker-couchdb-entrypoint.sh
