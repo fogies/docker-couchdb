@@ -2,7 +2,7 @@
 # This file compiled from Dockerfile.in.
 #
 
-FROM couchdb:1.6.1
+FROM couchdb:2.3.0
 
 #
 # Environment configurations to get everything to play well
@@ -60,7 +60,7 @@ RUN apt-get -qq clean && \
 		liblzma-dev \
 		libmagickcore-dev \
 		libmagickwand-dev \
-		libmysqlclient-dev \
+		# libmysqlclient-dev \
 		libncurses-dev \
 		libpng-dev \
 		libpq-dev \
@@ -90,15 +90,12 @@ RUN apt-get -qq clean && \
 ENV PYTHON_VERSION 3.6.6
 ENV PYTHON_PIP_VERSION 18.0
 
-# Remove Debian python
-RUN apt-get -qq purge -y python.*
-
-# Install pyenv
+# Install desired Python version using pyenv
 ENV PYENV_ROOT /root/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
 RUN set -ex \
-    && curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash \
+    && curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash \
     && pyenv update \
     && pyenv install $PYTHON_VERSION \
     && pyenv global $PYTHON_VERSION \
@@ -122,6 +119,13 @@ RUN dos2unix /docker-couchdb-temp/local.ini
 
 COPY docker-couchdb/apply_secrets.py /docker-couchdb-temp/apply_secrets.py
 RUN dos2unix /docker-couchdb-temp/apply_secrets.py
+
+################################################################################
+# Daemon that creates the databases needed for CouchDB to run.
+################################################################################
+COPY docker-couchdb/create_databases.py /docker-couchdb-temp/create_databases.py
+RUN dos2unix /docker-couchdb-temp/create_databases.py && \
+    chmod +x /docker-couchdb-temp/create_databases.py
 
 ################################################################################
 # Set up our entrypoint script, which wraps the script from our base.

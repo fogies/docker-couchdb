@@ -39,7 +39,7 @@ config:
     main:
       file: Dockerfile
       context: .
-      base_image: couchdb:1.6.1
+      base_image: couchdb:2.3.0
 
   readme:
     url_github: https://github.com/fogies/docker-base
